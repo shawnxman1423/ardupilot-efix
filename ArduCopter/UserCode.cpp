@@ -26,6 +26,20 @@ void Copter::userhook_50Hz()
 void Copter::userhook_MediumLoop()
 {
     // put your 10Hz code here
+    float rpm1, rpm2, rpm3;
+    copter.rpm_sensor.get_rpm(1, rpm1);
+    copter.rpm_sensor.get_rpm(2, rpm2);
+    copter.rpm_sensor.get_rpm(3, rpm3);
+
+    mavlink_data16_t packet;
+    packet.type = 1;
+    packet.len = 4;
+    packet.data[0] = 1;
+    packet.data[1] = 2;
+    packet.data[2] = 3;
+    packet.data[3] = 4;
+
+    copter.gcs().send_to_active_channels(169, (const char *)&packet);
 }
 #endif
 
